@@ -1,4 +1,4 @@
-ALPHA 1.7
+beta 0.1
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,6 +66,8 @@ ALPHA 1.7
 </head>
 <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/MathJax.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
   <script>
     MathJax.Hub.Config({
       TeX: {
@@ -75,7 +77,6 @@ ALPHA 1.7
       }
     });
 
-    // Trigger MathJax rendering after the DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
       MathJax.Hub.Queue(["Typeset", MathJax.Output.HTML, document.getElementById('question')]);
     });
@@ -85,7 +86,8 @@ ALPHA 1.7
   <p>Test your math skills with this increasingly challenging game.</p>
 
   <div id="question">
-    </div>
+    \[\frac{1}{x} + \frac{1}{y} = \frac{1}{z}\]
+  </div>
 
   <input type="number" id="answer">
   <button id="submitButton">Submit</button>
@@ -105,8 +107,24 @@ ALPHA 1.7
 
       switch (difficulty) {
         case 'easy':
-          num1 = Math.floor(Math.random() * 10
-		  
+          num1 = Math.floor(Math.random() * 10) + 1;
+          num2 = Math.floor(Math.random() * 10) + 1;
+          operator = '+';
+          break;
+
+        case 'medium':
+          num1 = Math.floor(Math.random() * 100) + 1;
+          num2 = Math.floor(Math.random() * 100) + 1;
+          operator = Math.random() < 0.5 ? '+' : '-';
+          break;
+
+        case 'hard':
+          num1 = Math.floor(Math.random() * 1000) + 1;
+          num2 = Math.floor(Math.random() * 1000) + 1;
+          operator = Math.random() < 0.5 ? '+' : '-';
+          break;
+      }
+    }
   </script>
 </body>
-</html>
+</
