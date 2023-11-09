@@ -1,11 +1,9 @@
-beta 0.1
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Math Challenge</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/MathJax.css">
   <style>
     body {
       font-family: sans-serif;
@@ -46,11 +44,6 @@ beta 0.1
       margin-top: 20px;
     }
 
-    .difficulty {
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
     .scoreboard {
       margin-top: 20px;
     }
@@ -65,66 +58,63 @@ beta 0.1
   </style>
 </head>
 <body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/MathJax.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
-  <script>
-    MathJax.Hub.Config({
-      TeX: {
-        Macros: {
-          // Define any custom macros here
-        }
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      MathJax.Hub.Queue(["Typeset", MathJax.Output.HTML, document.getElementById('question')]);
-    });
-  </script>
-
   <h1>Math Challenge</h1>
-  <p>Test your math skills with this increasingly challenging game.</p>
-
-  <div id="question">
-    \[\frac{1}{x} + \frac{1}{y} = \frac{1}{z}\]
-  </div>
-
-  <input type="number" id="answer">
+  <div id="question"></div>
+  <input type="text" id="answer" placeholder="Your Answer">
   <button id="submitButton">Submit</button>
-
   <div id="feedback"></div>
-  <div class="difficulty"></div>
+  <div class="scoreboard">Correct Answers: <span id="correctAnswers">0</span></div>
 
-  <div class="scoreboard">
-    <span>Correct Answers: <span id="correctAnswers">0</span></span>
-    <span> | Total Answers: <span id="totalAnswers">0</span></span>
-  </div>
-
-  <script>
-    // Generate a random math problem with varying difficulty levels
-    function generateProblem(difficulty) {
-      let num1, num2, operator;
-
-      switch (difficulty) {
-        case 'easy':
-          num1 = Math.floor(Math.random() * 10) + 1;
-          num2 = Math.floor(Math.random() * 10) + 1;
-          operator = '+';
-          break;
-
-        case 'medium':
-          num1 = Math.floor(Math.random() * 100) + 1;
-          num2 = Math.floor(Math.random() * 100) + 1;
-          operator = Math.random() < 0.5 ? '+' : '-';
-          break;
-
-        case 'hard':
-          num1 = Math.floor(Math.random() * 1000) + 1;
-          num2 = Math.floor(Math.random() * 1000) + 1;
-          operator = Math.random() < 0.5 ? '+' : '-';
-          break;
-      }
+  <script type="text/javascript">
+    // Function to generate a random integer between min and max (inclusive)
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
+    // Generate a random equation
+    function generateRandomEquation() {
+      const a = getRandomInt(1, 10);
+      const b = getRandomInt(1, 10);
+      const operator = ['+', '-', '*', '/'][getRandomInt(0, 3)];
+      const question = `${a} ${operator} ${b}`;
+      return question;
+    }
+
+    // Display a random equation when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const questionElement = document.getElementById('question');
+      questionElement.textContent = generateRandomEquation();
+    });
+
+    // Handle submission of the answer
+    const submitButton = document.getElementById('submitButton');
+    submitButton.addEventListener('click', function() {
+      const answerInput = document.getElementById('answer');
+      const feedbackElement = document.getElementById('feedback');
+      const questionElement = document.getElementById('question');
+      const correctAnswersElement = document.getElementById('correctAnswers');
+      
+      // Get the user's answer and the current equation
+      const userAnswer = parseFloat(answerInput.value);
+      const currentEquation = questionElement.textContent;
+
+      // Evaluate the current equation
+      const correctAnswer = eval(currentEquation);
+
+      // Check if the user's answer is correct
+      if (!isNaN(userAnswer) && userAnswer === correctAnswer) {
+        feedbackElement.textContent = 'Correct!';
+        feedbackElement.className = 'correct';
+        correctAnswersElement.textContent = parseInt(correctAnswersElement.textContent) + 1;
+      } else {
+        feedbackElement.textContent = 'Incorrect. Try again.';
+        feedbackElement.className = 'incorrect';
+      }
+
+      // Generate a new random equation
+      questionElement.textContent = generateRandomEquation();
+      answerInput.value = ''; // Clear the answer input field
+    });
   </script>
 </body>
-</
+</html>
