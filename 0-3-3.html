@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Challenge</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    #question {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    #answer {
+      width: 100px;
+      height: 30px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+
+    #submitButton {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #feedback {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    .scoreboard {
+      margin-top: 20px;
+    }
+
+    span.correct {
+      color: green;
+    }
+
+    span.incorrect {
+      color: red;
+    }
+
+    .difficulty-buttons,
+    .operation-buttons {
+      margin-top: 20px;
+    }
+
+    #difficultyCounter {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Math Challenge</h1>
+  <div id="question"></div>
+  <input type="text" id="answer" placeholder="Your Answer">
+  <button id="submitButton">Submit</button>
+  <div id="feedback"></div>
+  <div class="scoreboard">Correct Answers: <span id="correctAnswers">0</span></div>
+
+  <div class="difficulty-buttons">
+    <button id="increaseDifficulty">Increase Difficulty</button>
+    <button id="decreaseDifficulty">Decrease Difficulty</button>
+  </div>
+
+  <div class="operation-buttons">
+    <button id="addition">Addition</button>
+    <button id="subtraction">Subtraction</button>
+    <button id="multiplication">Multiplication</button>
+    <button id="division">Division</button>
+    <button id="mixed">Mixed</button>
+  </div>
+
+  <div id="difficultyCounter">Difficulty Level: <span id="currentDifficulty">5</span></div>
+
+  <script type="text/javascript">
+    // Function to generate a random integer between min and max (inclusive)
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Generate a random equation with a specified difficulty level and operation
+    function generateRandomEquation(difficulty, operation) {
+      const a = getRandomInt(1, difficulty);
+      const b = getRandomInt(1, difficulty);
+      let operator;
+
+      switch (operation) {
+        case 'addition':
+          operator = '+';
+          break;
+        case 'subtraction':
+          operator = '-';
+          break;
+        case 'multiplication':
+          operator = '*';
+          break;
+        case 'division':
+          operator = '/';
+          break;
+        default:
+          operator = ['+', '-', '*', '/'][getRandomInt(0, 3)];
+      }
+
+      const question = `${a} ${operator} ${b}`;
+      return question;
+    }
+
+    // Display a random equation and update difficulty counter when the page loads
+    let currentDifficulty = 5;
+    let currentOperation = 'addition';
+    const questionElement = document.getElementById('question');
+    const difficultyCounterElement = document.getElementById('currentDifficulty');
+    questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+    difficultyCounterElement.textContent = currentDifficulty;
+
+    // Handle submission of the answer
+    const submitButton = document.getElementById('submitButton');
+    submitButton.addEventListener('click', submitAnswer);
+
+    // Handle "Enter" key press in the answer input
+    const answerInput = document.getElementById('answer');
+    answerInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        submitAnswer();
+      }
+    });
+
+    function submitAnswer() {
+      const answerInput = document.getElementById('answer');
+      const feedbackElement = document.getElementById('feedback');
+      const correctAnswersElement = document.getElementById('correctAnswers');
+      
+      // Get the user's answer and the current equation
+      const userAnswer = parseFloat(answerInput.value);
+      const currentEquation = questionElement.textContent;
+
+      // Evaluate the current equation
+      const correctAnswer = eval(currentEquation);
+
+      // Check if the user's answer is correct
+      if (!isNaN(userAnswer) && userAnswer === correctAnswer) {
+        feedbackElement.textContent = 'Correct!';
+        feedbackElement.className = 'correct';
+        correctAnswersElement.textContent = parseInt(correctAnswersElement.textContent) + 1;
+      } else {
+        feedbackElement.textContent = 'Incorrect. Try again.';
+        feedbackElement.className = 'incorrect';
+      }
+
+      // Generate a new random equation with the current difficulty and operation
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+      answerInput.value = ''; // Clear the answer input field
+    }
+
+    // Handle difficulty increase button
+    const increaseDifficultyButton = document.getElementById('increaseDifficulty');
+    increaseDifficultyButton.addEventListener('click', function() {
+      currentDifficulty += 1;
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+      difficultyCounterElement.textContent = currentDifficulty;
+    });
+
+    // Handle difficulty decrease button
+    const decreaseDifficultyButton = document.getElementById('decreaseDifficulty');
+    decreaseDifficultyButton.addEventListener('click', function() {
+      if (currentDifficulty > 1) {
+        currentDifficulty -= 1;
+        questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+        difficultyCounterElement.textContent = currentDifficulty;
+      }
+    });
+
+    // Handle operation buttons
+    const additionButton = document.getElementById('addition');
+    const subtractionButton = document.getElementById('subtraction');
+    const multiplicationButton = document.getElementById('multiplication');
+    const divisionButton = document.getElementById('division');
+    const mixedButton = document.getElementById('mixed');
+
+    additionButton.addEventListener('click', function() {
+      currentOperation = 'addition';
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+    });
+
+    subtractionButton.addEventListener('click', function() {
+      currentOperation = 'subtraction';
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+    });
+
+    multiplicationButton.addEventListener('click', function() {
+      currentOperation = 'multiplication';
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+    });
+
+    divisionButton.addEventListener('click', function() {
+      currentOperation = 'division';
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+    });
+
+    mixedButton.addEventListener('click', function() {
+      currentOperation = 'mixed';
+      questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
+    });
+  </script>
+</body>
+</html>
