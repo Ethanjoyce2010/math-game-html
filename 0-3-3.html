@@ -110,13 +110,13 @@
           operator = '-';
           break;
         case 'multiplication':
-          operator = '*';
+          operator = '×';
           break;
         case 'division':
-          operator = '/';
+          operator = '÷';
           break;
         default:
-          operator = ['+', '-', '*', '/'][getRandomInt(0, 3)];
+          operator = ['+', '-', '×', '÷'][getRandomInt(0, 3)];
       }
 
       const question = `${a} ${operator} ${b}`;
