@@ -160,6 +160,13 @@
             const answerInput = document.getElementById('answer');
             const feedbackElement = document.getElementById('feedback');
             const correctAnswersElement = document.getElementById('correctAnswers');
+            const submitButton = document.getElementById('submitButton');
+
+            // Disable the input for 1 second
+            answerInput.disabled = true;
+            setTimeout(function () {
+                answerInput.disabled = false;
+            }, 1000);
 
             // Get the user's answer and the current equation
             const userAnswer = parseFloat(answerInput.value);
