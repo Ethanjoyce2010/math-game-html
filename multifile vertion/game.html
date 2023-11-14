@@ -96,7 +96,6 @@
         <button id="addition">Addition</button>
         <button id="subtraction">Subtraction</button>
         <button id="multiplication">Multiplication</button>
-        <button id="division">Division</button>
         <button id="mixed">Mixed</button>
     </div>
 
@@ -124,11 +123,8 @@
                 case 'multiplication':
                     operator = '×';
                     break;
-                case 'division':
-                    operator = '÷';
-                    break;
                 default:
-                    operator = ['+', '-', '×', '÷'][getRandomInt(0, 3)];
+                    operator = ['+', '-', '×'][getRandomInt(0, 2)];
             }
 
             const question = `${a} ${operator} ${b}`;
@@ -212,7 +208,6 @@
         const additionButton = document.getElementById('addition');
         const subtractionButton = document.getElementById('subtraction');
         const multiplicationButton = document.getElementById('multiplication');
-        const divisionButton = document.getElementById('division');
         const mixedButton = document.getElementById('mixed');
 
         additionButton.addEventListener('click', function () {
@@ -227,11 +222,6 @@
 
         multiplicationButton.addEventListener('click', function () {
             currentOperation = 'multiplication';
-            questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
-        });
-
-        divisionButton.addEventListener('click', function () {
-            currentOperation = 'division';
             questionElement.textContent = generateRandomEquation(currentDifficulty, currentOperation);
         });
 
